@@ -2,28 +2,43 @@ package fr.kelly.corp
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives.{complete, get, path}
+import akka.http.scaladsl.model.HttpMethods._
+import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.Sink
 
-import scala.io.StdIn
+import scala.concurrent.Future
 
-object Backend extends App{
-  implicit val system = ActorSystem("my-system")
+object Backend extends App {
+  implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val route =
-    path("") {
-      get {
-        complete("I am a cat")
-      }
-    }
+  val serverSource = Http().bind(interface = "localhost", port = 8080)
 
-  val bindingFuture = Http().bindAndHandle(route, "192.161.71.51", 80)
+  val requestHandler: HttpRequest => HttpResponse = {
+    case HttpRequest(GET, Uri.Path("/"), _, _, _) =>
+      HttpResponse(entity = HttpEntity(
+        ContentTypes.`text/html(UTF-8)`,
+        "<html><body>Hello world!</body></html>"))
 
-  println(s"Server online at http://localhost:8085/\nPress RETURN to stop...")
-  StdIn.readLine() // let it run until user presses return
-  bindingFuture
-    .flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ => system.terminate()) // and shutdown when done
+    case HttpRequest(GET, Uri.Path("/ping"), _, _, _) =>
+      HttpResponse(entity = "PONG!")
+
+    case HttpRequest(GET, Uri.Path("/crash"), _, _, _) =>
+      sys.error("BOOM!")
+
+    case r: HttpRequest =>
+      r.discardEntityBytes() // important to drain incoming HTTP Entity stream
+      HttpResponse(404, entity = "Unknown resource!")
+  }
+
+  val bindingFuture: Future[Http.ServerBinding] =
+    serverSource.to(Sink.foreach { connection =>
+      println("Accepted new connection from " + connection.remoteAddress)
+
+      connection handleWithSyncHandler requestHandler
+      // this is equivalent to
+      // connection handleWith { Flow[HttpRequest] map requestHandler }
+    }).run()
 }

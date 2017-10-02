@@ -42,7 +42,7 @@
       <archive>
         <manifest>
           <addClasspath>true</addClasspath>
-          <mainClass>com.package.MainClass</mainClass>
+          <mainClass>fr.corp.kelly.Backend</mainClass>
         </manifest>
       </archive>
       <descriptorRefs>

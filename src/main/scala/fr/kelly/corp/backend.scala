@@ -7,7 +7,7 @@ import akka.stream.ActorMaterializer
 
 import scala.io.StdIn
 
-object backend extends App{
+object Backend extends App{
   implicit val system = ActorSystem("my-system")
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher

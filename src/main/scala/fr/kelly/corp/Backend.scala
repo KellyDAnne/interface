@@ -14,7 +14,7 @@ object Backend extends App {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val serverSource = Http().bind(interface = "localhost", port = 8080)
+  val serverSource = Http().bind(interface = "localhost", port = 81)
 
   val requestHandler: HttpRequest => HttpResponse = {
     case HttpRequest(GET, Uri.Path("/"), _, _, _) =>

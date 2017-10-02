@@ -19,7 +19,7 @@ object Backend extends App{
       }
     }
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 80)
+  val bindingFuture = Http().bindAndHandle(route, "192.161.71.51", 80)
 
   println(s"Server online at http://localhost:8085/\nPress RETURN to stop...")
   StdIn.readLine() // let it run until user presses return

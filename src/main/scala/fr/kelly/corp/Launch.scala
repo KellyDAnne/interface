@@ -8,7 +8,7 @@ import akka.stream.ActorMaterializer
 import scala.io.StdIn
 
 
-object launch extends App {
+object Launch extends App {
 
   implicit val system = ActorSystem("my-system")
   implicit val materializer = ActorMaterializer()

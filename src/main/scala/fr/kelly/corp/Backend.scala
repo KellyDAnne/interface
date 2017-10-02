@@ -20,7 +20,7 @@ object Backend extends App {
     case HttpRequest(GET, Uri.Path("/"), _, _, _) =>
       HttpResponse(entity = HttpEntity(
         ContentTypes.`text/html(UTF-8)`,
-        "<html><body>Hello world!</body></html>"))
+        "<html><body>Je suis un chat</body></html>"))
 
     case HttpRequest(GET, Uri.Path("/ping"), _, _, _) =>
       HttpResponse(entity = "PONG!")

@@ -6,6 +6,7 @@ var config = {
    devServer: {
          inline: true, // autorefresh
          host: "0.0.0.0",
+         disableHostCheck: true,
          port: 80 // development port server
       },
    module: {

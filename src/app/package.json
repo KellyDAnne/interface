@@ -4,7 +4,7 @@
   "description": "We'll see about that",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot"
+    "start": "webpack-dev-server"
   },
   "author": "kelly",
   "license": "ISC",

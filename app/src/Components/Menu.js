@@ -12,9 +12,7 @@ render() {
                 <NavItem eventKey={3} >NavItem 3 content</NavItem>
             </Nav>
         </Col>
-        <Col lgHidden smHidden mdHidden>
-        3 traits
-        </Col>
+
     </div>
   );
 }
